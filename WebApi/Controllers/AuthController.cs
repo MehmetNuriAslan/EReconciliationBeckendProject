@@ -18,6 +18,7 @@ namespace WebApi.Controllers
         [HttpPost("register")]
         public IActionResult Register(UserForRegister userForRegister)
         {
+            string a;
             var userExist = _authService.UserExist(userForRegister.Email);
             if (!userExist.Success)
             {
