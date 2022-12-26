@@ -34,6 +34,7 @@ namespace Core.Utilities.Security.JWT
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
             var token = jwtSecurityTokenHandler.WriteToken(jwt);
 
+
             return new AccessToken
             {
                 Token = token,
