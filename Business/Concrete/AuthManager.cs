@@ -22,13 +22,15 @@ namespace Business.Concrete
         private readonly ICompanyService _companyService;
         private readonly IMailService _mailService;
         private readonly IMailParameterService _mailParameterService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailService mailService, IMailParameterService mailParameterService)
+        private readonly IMailTemplateService _mailTemplateService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailService mailService, IMailParameterService mailParameterService, IMailTemplateService mailTemplateService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
             _companyService = companyService;
             _mailService = mailService; 
             _mailParameterService = mailParameterService;
+            _mailTemplateService = mailTemplateService; 
         }
 
         public IResult CompanyExist(Company company)
@@ -94,6 +96,18 @@ namespace Business.Concrete
                 PasswordHash=user.PasswordHash,
                 PasswordSalt= user.PasswordSalt
             };
+            string subject = "Kullanıcı Onay Maili";
+            string body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerekmektedir.";
+            string link = "https://localhost:7220";
+            string linkDescription = "Kaydı Onaylamak için Tıklayınız.";
+
+            var mailTemplate = _mailTemplateService.GetByTemplateName("Kayıt", 2);
+            string templatebody = mailTemplate.Data.Value;
+            templatebody.Replace("{{title}}",subject);
+            templatebody.Replace("{{message}}", body);
+            templatebody.Replace("{{link}}", link);
+            templatebody.Replace("{{linkDescription}}", linkDescription);
+
 
             var mailparameter = _mailParameterService.Get(2);
             SendMailDto sendMailDto = new SendMailDto
@@ -101,7 +115,7 @@ namespace Business.Concrete
                 mailParameter = mailparameter.Data,
                 email = user.Email,
                 subject = "Kullanıcı Onay Maili",
-                body="Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerekmektedir."
+                body=templatebody
             };
 
             _mailService.SendMail(sendMailDto);
