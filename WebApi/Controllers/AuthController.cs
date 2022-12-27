@@ -73,5 +73,31 @@ namespace WebApi.Controllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpGet("confirmuser")]
+        public IActionResult ConfirmUser(string value)
+        {
+            var user=_authService.GetByMailCnfirmValllle(value).Data;
+            user.MailConfirm = true;
+            user.MailConfirmDate = DateTime.Now;
+            var result=_authService.Update(user);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest();
+        }
+
+        [HttpGet("sendconfirmemail")]
+        public IActionResult SendConfirmEmail(int id)
+        {
+            var user = _authService.GetById(id).Data;
+            var result=_authService.SendConfirmEmail(user);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+            return BadRequest();
+        }
     }
 }

@@ -20,6 +20,8 @@ namespace Business.Constants
         public static string MailTemplateAdded = "Mail Şablonu Başarıyla Kaydedildi";
         public static string MailTemplateDeleted = "Mail Şablonu Başarıyla Silindi";
         public static string MailTemplateUpdated = "Mail Şablonu Başarıyla Güncellendi";
+        public static string UserMailConfirmSuccessful = "Mailiniz Başarıyla Onaylandı.";
+        public static string MailConfirmSendSuccessful = "Onay Maili Tekrar Gönderildi";
         
     }
 }
