@@ -23,7 +23,7 @@ namespace DataAccess.Concrete
                 mail.IsBodyHtml=true;
                 //mail.Attachments.Add();
 
-                using (SmtpClient smtp = new SmtpClient(sendMailDto.mailParameter.SMTP))
+                using (SmtpClient smtp = new SmtpClient(sendMailDto.mailParameter.SMTP,sendMailDto.mailParameter.Port))
                 {
                     smtp.UseDefaultCredentials = false;
                     smtp.Credentials = new NetworkCredential(sendMailDto.mailParameter.Email, sendMailDto.mailParameter.Password);
