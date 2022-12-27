@@ -5,6 +5,7 @@ using Core.Utilities.Hashing;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.Dtos;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,22 @@ namespace Business.Concrete
     {
         private readonly IUserService _userService;
         private readonly ITokenHelper _tokenHelper;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        private readonly ICompanyService _companyService;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
+            _companyService = companyService;   
+        }
+
+        public IResult CompanyExist(Company company)
+        {
+            var result = _companyService.CompanyExist(company);
+            if (!result.Success)
+            {
+                return new ErrorResult(Messages.CompanyAlreadyExist);
+            }
+            return new SuccessResult();
         }
 
         public IDataResult<AccessToken> CreateAccessToken(User user,int companyId)
@@ -45,7 +58,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck,Messages.SuccessfullLogin);    
         }
 
-        public IDataResult<User> Register(UserForRegister userForRegister, string password)
+        public IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password,Company company)
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password,out passwordHash,out passwordSalt);
@@ -61,7 +74,34 @@ namespace Business.Concrete
                 Name=userForRegister.Name                
             };
             _userService.Add(user);
-            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+            _companyService.Add(company);
+            _companyService.UserCompanyAdd(user.Id,company.Id);
+            UserCompanyDto userCompanyDto = new UserCompanyDto
+            {
+                Id = user.Id,
+                AddedAt= user.AddedAt,
+                Email=user.Email,
+                CompanyId=company.Id,
+                IsActive=user.IsActive,
+                MailConfirm=user.MailConfirm,
+                MailConfirmDate=user.MailConfirmDate,
+                MailConfirmValue=user.MailConfirmValue,
+                Name=user.Name,
+                PasswordHash=user.PasswordHash,
+                PasswordSalt= user.PasswordSalt
+            };
+            return new SuccessDataResult<UserCompanyDto>(userCompanyDto, Messages.UserRegistered);
+        }
+
+
+        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password, Company company)
+        {
+            throw new NotImplementedException();
         }
 
         public IResult UserExist(string email)

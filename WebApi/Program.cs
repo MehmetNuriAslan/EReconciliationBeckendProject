@@ -8,12 +8,16 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//dependecy injection ayarlarý
+
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => builder.RegisterModule(new AutofacBusinessModule()));
 
 IConfiguration configuration = builder.Configuration;
+////dependecy injection bitiþ
 builder.Services.AddControllers();
+//jwt ayarlarý
 builder.Services.AddCors(options => 
 {
     options.AddPolicy("AllowOrigin",
@@ -33,6 +37,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.Issuer)
     };
     });
+//jwt ayarlarý bitiþ
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -50,6 +55,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(builder=>builder.WithOrigins("https://localhost:7297").AllowAnyHeader());
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();    
 
 app.UseAuthorization();
 
