@@ -22,6 +22,8 @@ namespace Business.Constants
         public static string MailTemplateUpdated = "Mail Şablonu Başarıyla Güncellendi";
         public static string UserMailConfirmSuccessful = "Mailiniz Başarıyla Onaylandı.";
         public static string MailConfirmSendSuccessful = "Onay Maili Tekrar Gönderildi";
+        public static string MailAlreadyConfirm = "Mailiniz zaten onaylı. Tekrar gönderil yapılmadı.";
+        public static string MailConfirmTimeHasNotExpired = "Mail onayını 5 dakikada bir gönderebilirsiniz.";
         
     }
 }

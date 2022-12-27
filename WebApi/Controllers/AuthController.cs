@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results.Concrete;
 using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -42,7 +43,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("registerSecondAccount")]
-        public IActionResult RegisterSecondAccount(UserForRegister userForRegister, int companyId)
+        public IActionResult RegisterSecondAccount(UserForRegisterToSecondAccountDto userForRegister)
         {
             string a;
             var userExist = _authService.UserExist(userForRegister.Email);
@@ -50,7 +51,9 @@ namespace WebApi.Controllers
             {
                 return BadRequest(userExist.Message);
             }
-            var registerResult = _authService.RegisterSecondAccount(userForRegister, userForRegister.Password);
+            var registerResult = _authService.RegisterSecondAccount(userForRegister, userForRegister.Password,userForRegister.CompanyId);
+
+
             var result = _authService.CreateAccessToken(registerResult.Data, 0);
             if (result.Success)
             {
@@ -66,12 +69,19 @@ namespace WebApi.Controllers
             {
                 return BadRequest(userToLogin.Message);
             }
-            var result = _authService.CreateAccessToken(userToLogin.Data, 0);
-            if (result.Success)
+            if (userToLogin.Data.IsActive)
             {
-                return Ok(result.Data);
+                var userCompany = _authService.GetCompany(userToLogin.Data.Id).Data;
+                var result = _authService.CreateAccessToken(userToLogin.Data, userCompany.CompanyId);
+                if (result.Success)
+                {
+                    return Ok(result.Data);
+                }
+                return BadRequest(result.Message);
             }
-            return BadRequest(result.Message);
+
+            return BadRequest("Kullanıcı Pasif Durumda Aktif Etmek için yöneticinize danışın.");
+
         }
 
         [HttpGet("confirmuser")]
@@ -97,7 +107,7 @@ namespace WebApi.Controllers
             {
                 return Ok(result.Message);
             }
-            return BadRequest();
+            return BadRequest(result.Message);
         }
     }
 }

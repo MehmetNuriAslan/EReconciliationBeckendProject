@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Business.Concrete
 {
@@ -82,6 +83,7 @@ namespace Business.Concrete
             {
                 Email = userForRegister.Email,
                 AddedAt = DateTime.Now,
+                IsActive= true,
                 MailConfirm = false,
                 MailConfirmDate = DateTime.Now,
                 MailConfirmValue = Guid.NewGuid().ToString(),
@@ -132,15 +134,34 @@ namespace Business.Concrete
             };
 
             _mailService.SendMail(sendMailDto);
-        }
-        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password)
-        {
-            throw new NotImplementedException();
+
+            user.MailConfirmDate= DateTime.Now;
+            _userService.Update(user);
         }
 
-        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password, Company company)
+
+        public IDataResult<User> RegisterSecondAccount(UserForRegister userForRegister, string password, int companyId)
         {
-            throw new NotImplementedException();
+            byte[] passwordHash, passwordSalt;
+            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            var user = new User()
+            {
+                Email = userForRegister.Email,
+                AddedAt = DateTime.Now,
+                IsActive = true,
+                MailConfirm = false,
+                MailConfirmDate = DateTime.Now,
+                MailConfirmValue = Guid.NewGuid().ToString(),
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
+                Name = userForRegister.Name
+            };
+            _userService.Add(user);
+            _companyService.UserCompanyAdd(user.Id, companyId);
+
+            SendconfirmEmail(user);
+
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
         public IResult Update(User user)
@@ -160,8 +181,32 @@ namespace Business.Concrete
 
         public IResult SendConfirmEmail(User user)
         {
+            if (user.MailConfirm==true)
+            {
+                return new ErrorResult(Messages.MailAlreadyConfirm);
+            }
+            DateTime confirmMailDate = user.MailConfirmDate;
+            DateTime now= DateTime.Now;
+            if (confirmMailDate.ToShortDateString()==now.ToShortDateString())
+            {
+                if (confirmMailDate.Hour==now.Hour&&confirmMailDate.AddMinutes(5).Minute<=now.Minute)
+                {
+                    SendconfirmEmail(user);
+                    return new SuccessResult(Messages.MailConfirmSendSuccessful);
+                }
+                else
+                {
+                    return new ErrorResult(Messages.MailConfirmTimeHasNotExpired);
+                }
+            }
             SendconfirmEmail(user);
             return new SuccessResult(Messages.MailConfirmSendSuccessful);
+
+        }
+
+        public IDataResult<UserCompany> GetCompany(int userId)
+        {
+            return new SuccessDataResult<UserCompany>(_companyService.GetCompany(userId).Data);
         }
     }
 }
