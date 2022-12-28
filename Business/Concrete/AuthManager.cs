@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.CrossCuttingConcern.Validation;
+using Business.ValidationRules.FluentValidation;
 using Core.Entities.Concrete;
 using Core.Utilities.Hashing;
 using Core.Utilities.Results.Abstract;
@@ -7,6 +9,7 @@ using Core.Utilities.Results.Concrete;
 using Core.Utilities.Security.JWT;
 using Entities.Concrete;
 using Entities.Dtos;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +80,7 @@ namespace Business.Concrete
 
         public IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password,Company company)
         {
+
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password,out passwordHash,out passwordSalt);
             var user = new User()
@@ -91,6 +95,9 @@ namespace Business.Concrete
                 PasswordSalt=passwordSalt,
                 Name=userForRegister.Name                
             };
+            ValidationTool.Validate(new UserValidator(),user);
+            ValidationTool.Validate(new CompanyValidator(),company);
+            
             _userService.Add(user);
             _companyService.Add(company);
             _companyService.UserCompanyAdd(user.Id,company.Id);
@@ -120,7 +127,7 @@ namespace Business.Concrete
             string link = "https://localhost:7297/api/auth/confirmuser?value=" + user.MailConfirmValue;
             string linkDescription = "Kaydı Onaylamak için Tıklayınız.";
 
-            var mailTemplate = _mailTemplateService.GetByTemplateName("Kayıt", 2);
+            var mailTemplate = _mailTemplateService.GetByTemplateName("Kayit", 2);
             string templatebody = mailTemplate.Data.Value.Replace("{{linkDescription}}", linkDescription).Replace("{{link}}", link).Replace("{{title}}", subject).Replace("{{message}}", body);
 
 
