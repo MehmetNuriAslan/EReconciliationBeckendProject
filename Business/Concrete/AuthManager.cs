@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.CrossCuttingConcern.Validation;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Transaction;
 using Core.Entities.Concrete;
 using Core.Utilities.Hashing;
 using Core.Utilities.Results.Abstract;
@@ -78,6 +79,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck,Messages.SuccessfullLogin);    
         }
 
+       // [TransactionScopeAspect]
         public IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password,Company company)
         {
 
@@ -95,8 +97,6 @@ namespace Business.Concrete
                 PasswordSalt=passwordSalt,
                 Name=userForRegister.Name                
             };
-            //ValidationTool.Validate(new UserValidator(),user);
-            //ValidationTool.Validate(new CompanyValidator(),company);
             
             _userService.Add(user);
             _companyService.Add(company);

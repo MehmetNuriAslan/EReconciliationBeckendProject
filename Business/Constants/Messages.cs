@@ -24,6 +24,7 @@ namespace Business.Constants
         public static string MailConfirmSendSuccessful = "Onay Maili Tekrar Gönderildi";
         public static string MailAlreadyConfirm = "Mailiniz zaten onaylı. Tekrar gönderil yapılmadı.";
         public static string MailConfirmTimeHasNotExpired = "Mail onayını 5 dakikada bir gönderebilirsiniz.";
+        public static string UpdatedCompany = "Şirket Kaydı Başarıyla Güncellendi.";
         
     }
 }
