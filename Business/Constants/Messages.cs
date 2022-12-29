@@ -25,6 +25,10 @@ namespace Business.Constants
         public static string MailAlreadyConfirm = "Mailiniz zaten onaylı. Tekrar gönderil yapılmadı.";
         public static string MailConfirmTimeHasNotExpired = "Mail onayını 5 dakikada bir gönderebilirsiniz.";
         public static string UpdatedCompany = "Şirket Kaydı Başarıyla Güncellendi.";
+
+        public static string AddedCurencyAccount = "Cari Kaydı Başarıyla Eklendi.";
+        public static string UpdatedCurencyAccount = "Cari Kaydı Başarıyla Güncellendi.";
+        public static string DeletedCurencyAccount = "Cari Kaydı Başarıyla silindi.";
         
     }
 }
