@@ -98,5 +98,9 @@ namespace Business.Concrete
             _currencyAccountDal.Update(currencyAccount);
             return new SuccessResult(Messages.UpdatedCurencyAccount);
         }
+        public IDataResult<CurrencyAccount> GetByCode(string code, int companyId)
+        {
+            return new SuccessDataResult<CurrencyAccount>(_currencyAccountDal.Get(p => p.CompanyId == companyId && p.Code == code));
+        }
     }
 }

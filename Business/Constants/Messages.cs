@@ -29,6 +29,10 @@ namespace Business.Constants
         public static string AddedCurencyAccount = "Cari Kaydı Başarıyla Eklendi.";
         public static string UpdatedCurencyAccount = "Cari Kaydı Başarıyla Güncellendi.";
         public static string DeletedCurencyAccount = "Cari Kaydı Başarıyla silindi.";
+
+        public static string AddedAccounReconciliation = "Cari Mutabakat Kaydı Başarılı.";
+        public static string UpdatedAccounReconciliation = "Cari Mutabakat Başarıyla güncellendi.";
+        public static string DeletedAccounReconciliation = "Cari Mutabakat Başarıyla silindi.";
         
     }
 }

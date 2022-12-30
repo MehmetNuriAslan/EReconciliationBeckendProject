@@ -16,5 +16,6 @@ namespace Business.Abstract
         IResult Delete(CurrencyAccount currencyAccount);
         IDataResult<CurrencyAccount> Get(int id);
         IDataResult<List<CurrencyAccount>> GetList(int companyId);
+        IDataResult<CurrencyAccount> GetByCode(string code, int companyId);
     }
 }
