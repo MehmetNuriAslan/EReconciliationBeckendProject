@@ -120,19 +120,6 @@ namespace Business.Concrete
                 PasswordSalt= user.PasswordSalt
             };
 
-            for (int i = 3; i < 40; i++)
-            {
-                UserOperationClaim userOperationClaim = new UserOperationClaim()
-                {
-                    UserId=user.Id,
-                    CompanyId=company.Id,   
-                    AddedAt=DateTime.Now,
-                    IsActive=true,
-                    OperationClaimId=i
-                };
-                _userOperationClaimService.Add(userOperationClaim);
-            }
-
             SendconfirmEmail(user);
             return new SuccessDataResult<UserCompanyDto>(userCompanyDto, Messages.UserRegistered);
         }
