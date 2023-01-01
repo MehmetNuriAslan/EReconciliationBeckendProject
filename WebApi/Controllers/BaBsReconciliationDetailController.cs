@@ -1,5 +1,4 @@
 ﻿using Business.Abstract;
-using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,13 +7,13 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountReconciliationController : ControllerBase
+    public class BaBsReconciliationDetailController : ControllerBase
     {
-        private readonly IAccountReconciliationService _accountReconciliationService;
+        private readonly IBaBsReconciliationDetailService _baBsReconciliationDetailService;
 
-        public AccountReconciliationController(IAccountReconciliationService accountReconciliationService)
+        public BaBsReconciliationDetailController(IBaBsReconciliationDetailService baBsReconciliationDetailService)
         {
-            _accountReconciliationService = accountReconciliationService;
+            _baBsReconciliationDetailService = baBsReconciliationDetailService;
         }
 
         [HttpPost("addFromExel")]
@@ -29,7 +28,7 @@ namespace WebApi.Controllers
                     file.CopyTo(stream);
                     stream.Flush();
                 }
-                var result = _accountReconciliationService.AddToExcel(filepath, companyId);
+                var result = _baBsReconciliationDetailService.AddToExcel(filepath, companyId);
                 if (result.Success)
                 {
                     return Ok(result);
@@ -40,9 +39,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(AccountReconciliation accountReconciliation)
+        public IActionResult Add(BaBsReconciliationDetail baBsReconciliationDetail)
         {
-            var result = _accountReconciliationService.Add(accountReconciliation);
+            var result = _baBsReconciliationDetailService.Add(baBsReconciliationDetail);
             if (result.Success)
             {
                 return Ok(result);
@@ -51,9 +50,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update(AccountReconciliation accountReconciliation)
+        public IActionResult Update(BaBsReconciliationDetail baBsReconciliation)
         {
-            var result = _accountReconciliationService.Update(accountReconciliation);
+            var result = _baBsReconciliationDetailService.Update(baBsReconciliation);
             if (result.Success)
             {
                 return Ok(result);
@@ -62,9 +61,9 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("delete")]
-        public IActionResult Delete(AccountReconciliation accountReconciliation)
+        public IActionResult Delete(BaBsReconciliationDetail baBsReconciliationDetail)
         {
-            var result = _accountReconciliationService.Delete(accountReconciliation);
+            var result = _baBsReconciliationDetailService.Delete(baBsReconciliationDetail);
             if (result.Success)
             {
                 return Ok(result);
@@ -73,9 +72,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getById")]
-        public IActionResult GetById(int id)
+        public IActionResult getById(int id)
         {
-            var result = _accountReconciliationService.GetById(id);
+            var result = _baBsReconciliationDetailService.GetById(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -84,9 +83,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getList")]
-        public IActionResult GetList(int companyId)
+        public IActionResult GetList(int baBsReconciliationId)
         {
-            var result = _accountReconciliationService.GetList(companyId);
+            var result = _baBsReconciliationDetailService.GetList(baBsReconciliationId);
             if (result.Success)
             {
                 return Ok(result);

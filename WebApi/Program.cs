@@ -1,6 +1,9 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
+using Core.DependencyResolvers;
+using Core.Extensions;
+using Core.Utilities.IOC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -18,7 +21,7 @@ IConfiguration configuration = builder.Configuration;
 ////dependecy injection bitiþ
 builder.Services.AddControllers();
 //jwt ayarlarý
-builder.Services.AddCors(options => 
+builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
       builder => builder.WithOrigins("https://localhost:7297"));
@@ -36,8 +39,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.Issuer)
     };
-    });
+});
 //jwt ayarlarý bitiþ
+
+//core caching
+
+builder.Services.AddDependencyResolvers(new ICoreModule[]{
+    new CoreModule(),
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -52,11 +61,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder=>builder.WithOrigins("https://localhost:7297").AllowAnyHeader());
+app.UseCors(builder => builder.WithOrigins("https://localhost:7297").AllowAnyHeader());
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();    
+app.UseAuthentication();
 
 app.UseAuthorization();
 

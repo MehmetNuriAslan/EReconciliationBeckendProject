@@ -32,7 +32,29 @@ namespace Business.Constants
 
         public static string AddedAccounReconciliation = "Cari Mutabakat Kaydı Başarılı.";
         public static string UpdatedAccounReconciliation = "Cari Mutabakat Başarıyla güncellendi.";
-        public static string DeletedAccounReconciliation = "Cari Mutabakat Başarıyla silindi.";
+        public static string DeletedAccounReconciliation = "Cari Mutabakat Başarıyla silindi.";        
         
+        public static string AddedAccounReconciliationDetail = "Cari Mutabakat Detay Kaydı Başarılı.";
+        public static string UpdatedAccounReconciliationDetail = "Cari Mutabakat Detay Başarıyla güncellendi.";
+        public static string DeletedAccounReconciliationDetail = "Cari Mutabakat Detay Başarıyla silindi.";
+
+        public static string AddedBaBsReconciliation = "BaBs Kaydı Başarılı.";
+        public static string UpdatedBaBsReconciliation = "BaBs Başarıyla güncellendi.";
+        public static string DeletedBaBsReconciliation = "BaBs Başarıyla silindi.";
+
+        public static string AddedBaBsReconciliationDetail = "BaBs Detay Kaydı Başarılı.";
+        public static string UpdatedBaBsReconciliationDetail = "BaBs Detay Başarıyla güncellendi.";
+        public static string DeletedBaBsReconciliationDetail = "BaBs Detay Başarıyla silindi.";        
+        
+        public static string AddedOperationClaim = "Yetki Başarıyla Eklendi.";
+        public static string UpdatedOperationClaim = "Yetki Başarıyla Güncellendi.";
+        public static string DeletedOperationClaim = "Yetki Başarıyla Silindi."; 
+        
+        public static string AddedUserOperationClaim = "Kullanıcıya Yetki Başarıyla Eklendi.";
+        public static string DeletedUserOperationClaim = "Kullanıcı Yetkisi Başarıyla Silindi.";
+        public static string UpdatedUserOperationClaim = "Kullanıcı Yetkisi Başarıyla Güncellendi.";
+
+
+
     }
 }

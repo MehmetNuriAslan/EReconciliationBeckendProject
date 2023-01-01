@@ -28,7 +28,9 @@ namespace Business.Concrete
         private readonly IMailService _mailService;
         private readonly IMailParameterService _mailParameterService;
         private readonly IMailTemplateService _mailTemplateService;
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailService mailService, IMailParameterService mailParameterService, IMailTemplateService mailTemplateService)
+        private readonly IUserOperationClaimService _userOperationClaimService ;
+        private readonly IOperationClaimService _operationClaimService ;
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailService mailService, IMailParameterService mailParameterService, IMailTemplateService mailTemplateService, IUserOperationClaimService userOperationClaimService, IOperationClaimService operationClaimService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
@@ -36,6 +38,8 @@ namespace Business.Concrete
             _mailService = mailService; 
             _mailParameterService = mailParameterService;
             _mailTemplateService = mailTemplateService; 
+            _userOperationClaimService= userOperationClaimService;
+            _operationClaimService= operationClaimService;
         }
 
         public IResult CompanyExist(Company company)
@@ -115,6 +119,19 @@ namespace Business.Concrete
                 PasswordHash=user.PasswordHash,
                 PasswordSalt= user.PasswordSalt
             };
+
+            for (int i = 3; i < 40; i++)
+            {
+                UserOperationClaim userOperationClaim = new UserOperationClaim()
+                {
+                    UserId=user.Id,
+                    CompanyId=company.Id,   
+                    AddedAt=DateTime.Now,
+                    IsActive=true,
+                    OperationClaimId=i
+                };
+                _userOperationClaimService.Add(userOperationClaim);
+            }
 
             SendconfirmEmail(user);
             return new SuccessDataResult<UserCompanyDto>(userCompanyDto, Messages.UserRegistered);

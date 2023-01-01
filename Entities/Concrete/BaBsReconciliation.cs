@@ -23,6 +23,6 @@ namespace Entities.Concrete
         public DateTime? EmailReadDate { get; set; }
         public bool? IsResultSucceed { get; set; }
         public DateTime? ResultDate { get; set; }
-        public string? ResultNote { get; set; }
+        public string ResultNote { get; set; }
     }
 }
