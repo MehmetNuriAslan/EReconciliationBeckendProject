@@ -122,7 +122,7 @@ namespace Business.Concrete
         }
 
         [PerformanceAspect(3)]
-        [SecuredOperation("CurrencyAccount.Get,Admin")]
+        //[SecuredOperation("CurrencyAccount.Get,Admin")]
         [CacheAspect(60)]
         public IDataResult<CurrencyAccount> GetByCode(string code, int companyId)
         {

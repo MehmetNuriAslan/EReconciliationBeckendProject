@@ -18,7 +18,7 @@ namespace DataAccess.Concrete
             {
                 var result = from operationClaim in context.OperationClaims
                              join userOperationClaim in context.UserOperationClaims
-                             on operationClaim.Id equals userOperationClaim.Id
+                             on operationClaim.Id equals userOperationClaim.OperationClaimId
                              where userOperationClaim.CompanyId == companyId && userOperationClaim.UserId == user.Id
                              select new OperationClaim
                              {
