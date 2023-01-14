@@ -24,7 +24,7 @@ builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
-      builder => builder.WithOrigins("https://localhost:7297"));
+      builder => builder.WithOrigins("https://localhost:7297", "http://localhost:4200"));
 });
 var tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
@@ -61,7 +61,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder => builder.WithOrigins("https://localhost:7297").AllowAnyHeader());
+app.UseCors(builder => builder.WithOrigins("https://localhost:7297", "http://localhost:4200").AllowAnyHeader());
 
 app.UseHttpsRedirection();
 
