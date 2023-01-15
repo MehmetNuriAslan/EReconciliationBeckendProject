@@ -128,7 +128,7 @@ namespace Business.Concrete
         {
             string subject = "Kullanıcı Onay Maili";
             string body = "Kullanıcınız sisteme kayıt oldu. Kaydınızı tamamlamak için aşağıdaki linke tıklamanız gerekmektedir.";
-            string link = "https://localhost:7297/api/auth/confirmuser?value=" + user.MailConfirmValue;
+            string link = "http://localhost:4200/confirm/" + user.MailConfirmValue;
             string linkDescription = "Kaydı Onaylamak için Tıklayınız.";
 
             var mailTemplate = _mailTemplateService.GetByTemplateName("Kayit", 2);
@@ -178,7 +178,7 @@ namespace Business.Concrete
         public IResult Update(User user)
         {
             _userService.Update(user);
-            return new SuccessResult(Messages.UserMailConfirmSuccessful);
+            return new SuccessResult(Messages.UpdatedUser);
         }
 
         public IResult UserExist(string email)
@@ -190,7 +190,7 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult SendConfirmEmail(User user)
+        public IResult SendConfirmEmailAgain(User user)
         {
             if (user.MailConfirm==true)
             {
@@ -218,6 +218,36 @@ namespace Business.Concrete
         public IDataResult<UserCompany> GetCompany(int userId)
         {
             return new SuccessDataResult<UserCompany>(_companyService.GetCompany(userId).Data);
+        }
+
+        public IDataResult<User> GetByEmail(string email)
+        {
+            return new SuccessDataResult<User>(_userService.GetByMail(email));
+        }
+
+        public IResult SendForgotPasswordEmail(User user, string value)
+        {
+            string subject = "Şifremi Unuttum";
+            string body = "Sitemizden şifrenizi unuttuğunuzu belirttiniz. Aşağıdaki linke tıklayarak şifrenizi yeniden belirleyebilirsiniz. Linkin süresi 1 saattir. Süre sonunda kullanılamaz. İyi günler dileriz.";
+            string link = "http://localhost:4200/forgot-password/" + value;
+            string linkDescription = "Şifrenizi Tekrar Belirlemek için Tıklayınız.";
+
+            var mailTemplate = _mailTemplateService.GetByTemplateName("Kayit", 2);
+            string templatebody = mailTemplate.Data.Value.Replace("{{linkDescription}}", linkDescription).Replace("{{link}}", link).Replace("{{title}}", subject).Replace("{{message}}", body);
+
+
+            var mailparameter = _mailParameterService.Get(2);
+            SendMailDto sendMailDto = new SendMailDto
+            {
+                mailParameter = mailparameter.Data,
+                email = user.Email,
+                subject = subject,
+                body = templatebody
+            };
+
+            _mailService.SendMail(sendMailDto);
+
+            return new SuccessResult(Messages.SendMailSuccessFul);
         }
     }
 }
