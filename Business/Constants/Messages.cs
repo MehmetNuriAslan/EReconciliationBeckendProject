@@ -54,6 +54,9 @@ namespace Business.Constants
         public static string DeletedUserOperationClaim = "Kullanıcı Yetkisi Başarıyla Silindi.";
         public static string UpdatedUserOperationClaim = "Kullanıcı Yetkisi Başarıyla Güncellendi.";
 
+        public static string UpdatedTermsAndCondition = "Sözleşme Başarıyla Güncellendi.";
+        public static string UpdatedUser = "Kullanıcı Başarıyla Güncellendi.";
+
 
 
     }
