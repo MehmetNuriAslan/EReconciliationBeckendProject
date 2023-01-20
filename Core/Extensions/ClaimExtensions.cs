@@ -31,5 +31,9 @@ namespace Core.Extensions
         {
             claims.Add(new Claim(ClaimTypes.Anonymous, company));
         }
+        public static void AddCompanyName(this ICollection<Claim> claims, string companyName)
+        {
+            claims.Add(new Claim(ClaimTypes.IsPersistent, companyName));
+        }
     }
 }
