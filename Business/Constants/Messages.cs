@@ -56,6 +56,7 @@ namespace Business.Constants
 
         public static string UpdatedTermsAndCondition = "Sözleşme Başarıyla Güncellendi.";
         public static string UpdatedUser = "Kullanıcı Başarıyla Güncellendi.";
+        public static string AccountHaveRecontiliation = "Mutabakat işlemi olan cari kaydı silemessiniz. İsterseniz pasife çekebilirsiniz.";
 
 
 

@@ -10,5 +10,6 @@ namespace DataAccess.Abstract
 {
     public interface ICurrencyAccountDal : IEntityRepository<CurrencyAccount>
     {
+        bool CheckCurrencyAccountReconciliation(int currencyAccountId);
     }
 }
