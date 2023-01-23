@@ -59,10 +59,10 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet("getList")]
-        public IActionResult GetList(int userId,int companyId)
+        [HttpGet("getListDto")]
+        public IActionResult GetListDto(int userId,int companyId)
         {
-            var result = _userOperationClaimservice.GetList(userId,companyId);
+            var result = _userOperationClaimservice.GetListDto(userId,companyId);
             if (result.Success)
             {
                 return Ok(result);
