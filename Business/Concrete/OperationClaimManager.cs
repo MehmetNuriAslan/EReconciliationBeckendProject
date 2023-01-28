@@ -10,6 +10,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Business.Concrete
             _operationClaimDal = operationClaimDal;
         }
 
-        [SecuredOperation("Admin")]
+        //[SecuredOperation("Admin")]
         public IResult Add(OperationClaim operationClaim)
         {
             _operationClaimDal.Add(operationClaim);
@@ -43,7 +44,7 @@ namespace Business.Concrete
             return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(s => s.Id == id));
         }
 
-        [SecuredOperation("Admin,OperationClaim.GetList")]
+        //[SecuredOperation("Admin,OperationClaim.GetList")]
         public IDataResult<List<OperationClaim>> GetList()
         {
             return new SuccessDataResult<List<OperationClaim>>(_operationClaimDal.Getlist());
@@ -54,6 +55,11 @@ namespace Business.Concrete
         {
             _operationClaimDal.Update(operationClaim);
             return new SuccessResult(Messages.UpdatedOperationClaim);
+        }
+
+        public IDataResult<OperationClaim> Get(Expression<Func<OperationClaim, bool>> filter)
+        {
+            return new SuccessDataResult<OperationClaim>(_operationClaimDal.Get(filter));
         }
     }
 }

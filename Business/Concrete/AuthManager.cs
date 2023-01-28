@@ -84,7 +84,7 @@ namespace Business.Concrete
             return new SuccessDataResult<User>(userToCheck,Messages.SuccessfullLogin);    
         }
 
-       // [TransactionScopeAspect]
+       [TransactionScopeAspect]
         public IDataResult<UserCompanyDto> Register(UserForRegister userForRegister, string password,Company company)
         {
 
@@ -120,6 +120,18 @@ namespace Business.Concrete
                 PasswordHash=user.PasswordHash,
                 PasswordSalt= user.PasswordSalt
             };
+
+            var operationClaims = _operationClaimService.Get(s=>s.Name=="User").Data;
+
+                UserOperationClaim useroperation = new UserOperationClaim
+                {
+                    CompanyId=company.Id,
+                    AddedAt=DateTime.Now,
+                    IsActive=true,
+                    OperationClaimId=operationClaims.Id,
+                    UserId=user.Id
+                };
+            _userOperationClaimService.Add(useroperation);
 
             SendconfirmEmail(user);
             return new SuccessDataResult<UserCompanyDto>(userCompanyDto, Messages.UserRegistered);
@@ -170,6 +182,18 @@ namespace Business.Concrete
             };
             _userService.Add(user);
             _companyService.UserCompanyAdd(user.Id, companyId);
+
+            var operationClaims = _operationClaimService.Get(s => s.Name == "User").Data;
+
+            UserOperationClaim useroperation = new UserOperationClaim
+            {
+                CompanyId = companyId,
+                AddedAt = DateTime.Now,
+                IsActive = true,
+                OperationClaimId = operationClaims.Id,
+                UserId = user.Id
+            };
+            _userOperationClaimService.Add(useroperation);
 
             SendconfirmEmail(user);
 

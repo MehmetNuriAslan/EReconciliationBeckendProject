@@ -4,6 +4,7 @@ using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,5 +17,6 @@ namespace Business.Abstract
         IResult Delete(OperationClaim operationClaim);
         IDataResult<OperationClaim> GetById(int id);
         IDataResult<List<OperationClaim>> GetList();
+        IDataResult<OperationClaim> Get(Expression<Func<OperationClaim, bool>> filter);
     }
 }

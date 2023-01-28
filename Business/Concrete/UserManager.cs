@@ -5,7 +5,10 @@ using Core.Aspects.Autofac.Validation;
 using Core.Aspects.Caching;
 using Core.Aspects.Performance;
 using Core.Entities.Concrete;
+using Core.Utilities.Results.Abstract;
+using Core.Utilities.Results.Concrete;
 using DataAccess.Abstract;
+using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +55,11 @@ namespace Business.Concrete
             return _userDal.GetClaims(user, companyId);
         }
 
+        [SecuredOperation("User.GetList,Admin")]
+        public IDataResult<List<UserCompanyForlistDto>> GetUserList(int companyId)
+        {
+           return new SuccessDataResult<List<UserCompanyForlistDto>>(_userDal.GetUserList(companyId));
+        }
 
         [PerformanceAspect(3)]
         //[SecuredOperation("User.Update,Admin")]

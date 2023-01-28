@@ -10,6 +10,7 @@ using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Business.Concrete
             _userOperationClaimDal = userOperationClaimDal; 
         }
 
-        [SecuredOperation("Admin,UserOperationClaim.Add")]
+        //[SecuredOperation("Admin,UserOperationClaim.Add")]
         public IResult Add(UserOperationClaim userOperationClaim)
         {
             _userOperationClaimDal.Add(userOperationClaim);
@@ -35,6 +36,11 @@ namespace Business.Concrete
         {
             _userOperationClaimDal.Delete(userOperationClaim);
             return new SuccessResult(Messages.DeletedUserOperationClaim);
+        }
+
+        public IDataResult<UserOperationClaim> Get(Expression<Func<UserOperationClaim, bool>> filter)
+        {
+            return new SuccessDataResult<UserOperationClaim>(_userOperationClaimDal.Get(filter));
         }
 
         [SecuredOperation("Admin,UserOperationClaim.Get")]
