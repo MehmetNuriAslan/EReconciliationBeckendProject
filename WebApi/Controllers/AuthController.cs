@@ -47,7 +47,6 @@ namespace WebApi.Controllers
         [HttpPost("registerSecondAccount")]
         public IActionResult RegisterSecondAccount(UserForRegisterToSecondAccountDto userForRegister)
         {
-            string a;
             var userExist = _authService.UserExist(userForRegister.Email);
             if (!userExist.Success)
             {
@@ -56,7 +55,7 @@ namespace WebApi.Controllers
             var registerResult = _authService.RegisterSecondAccount(userForRegister, userForRegister.Password,userForRegister.CompanyId);
 
 
-            var result = _authService.CreateAccessToken(registerResult.Data, 0);
+            var result = _authService.CreateAccessToken(registerResult.Data, userForRegister.CompanyId);
             if (result.Success)
             {
                 return Ok(result.Data);
