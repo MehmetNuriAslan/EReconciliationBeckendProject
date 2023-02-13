@@ -45,6 +45,8 @@ namespace WebApi.Controllers
             }
             return BadRequest(result.Message);
         }
+
+
         [HttpPost("addCompanyAndUserCompany")]
 
         public IActionResult AddCompanyAndUserCompany(CompanyDto companyDto)
@@ -60,6 +62,17 @@ namespace WebApi.Controllers
         public IActionResult UpdateCompanyAndUserCompany(Company company)
         {
             var result = _companyService.Update(company);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpPost("deleteCompany")]
+        public IActionResult DeleteCompany(Company company)
+        {
+            var result = _companyService.Delete(company);
             if (result.Success)
             {
                 return Ok(result);

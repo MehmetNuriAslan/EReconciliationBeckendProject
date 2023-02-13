@@ -14,6 +14,7 @@ namespace Business.Abstract
     {
         IResult Add(Company company);
         IResult Update(Company company);
+        IResult Delete(Company company);
         IResult AddCompanyAndUserCompany(CompanyDto companyDto);
         IDataResult<List<Company>> GetList();
         IDataResult<Company> GetById(int id);

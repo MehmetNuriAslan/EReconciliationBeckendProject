@@ -48,6 +48,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.AddedCompany);
         }
 
+       
         [CacheRemoveAspect("ICompanyService.Get")]
         public IResult CompanyExist(Company company)
         {
@@ -58,6 +59,14 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        [SecuredOperation("Company.Delete,Admin")]
+        public IResult Delete(Company company)
+        {
+            _companyDal.Delete(company);
+            return new SuccessResult(Messages.DeletedCompany);
+        }
+
         [CacheAspect(60)]
         public IDataResult<Company> GetById(int id)
         {
@@ -68,7 +77,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<UserCompany>(_companyDal.GetCompany(userId)) ;
         }
-        [CacheAspect(60)]
+        //[CacheAspect(60)]
         public IDataResult<List<Company>> GetList()
         {
             return new SuccessDataResult<List<Company>>(_companyDal.Getlist());

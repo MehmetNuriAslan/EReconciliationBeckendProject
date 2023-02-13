@@ -9,6 +9,7 @@ namespace Business.Constants
     public class Messages
     {
         public static string AddedCompany = "Şirket Kaydı Başarıyla Tamamlandı";
+        public static string DeletedCompany = "Şirket Kaydı Başarıyla Silindi";
         public static string UserNotFound = "Kullanıcı Bulunamadı";
         public static string PasswordError = "Şifre Yanlış";
         public static string SuccessfullLogin = "Giriş Başarılı";
