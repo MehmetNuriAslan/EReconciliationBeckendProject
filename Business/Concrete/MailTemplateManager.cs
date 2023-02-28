@@ -60,7 +60,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<MailTemplate>>(_mailTemplateDal.Getlist(s => s.CompanyId == companyId));
         }
 
-
+        public IDataResult<MailTemplate> GetByCompanyId(int companyId)
+        {
+            return new SuccessDataResult<MailTemplate>(_mailTemplateDal.Get(s => s.CompanyId == companyId));
+        }
 
         [CacheAspect(60)]
         public IDataResult<MailTemplate> GetByTemplateName(string name, int companyId)

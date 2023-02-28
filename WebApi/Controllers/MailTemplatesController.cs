@@ -15,6 +15,7 @@ namespace WebApi.Controllers
         {
             _mailTemplateService = mailTemplateService;
         }
+
         [HttpPost("add")]
         public IActionResult Add(MailTemplate mailTemplate)
         {
@@ -22,6 +23,17 @@ namespace WebApi.Controllers
             if (result.Success)
             {
                 return Ok(result.Message);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getByCompanyId")]
+        public IActionResult GetByCompanyId(int companyId)
+        {
+            var result = _mailTemplateService.GetByCompanyId(companyId);
+            if (result.Success)
+            {
+                return Ok(result);
             }
             return BadRequest(result.Message);
         }
